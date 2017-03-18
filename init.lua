@@ -19,7 +19,10 @@ minetest.register_node("handholds:climbable_air", {
 minetest.register_node("handholds:stone", {
 	description = "Stone",
 	tiles = {"default_stone.png"},
-	tiles = {"default_stone.png", "default_stone.png", "default_stone.png^handholds_holds.png"},
+	tiles = {"default_stone.png", "default_stone.png", 
+		"default_stone.png", "default_stone.png", 
+		"default_stone.png", "default_stone.png^handholds_holds.png"},
+	paramtype2 = "facedir",
 	groups = {cracky = 3, stone = 1},
 	drop = 'default:cobble',
 	sounds = default.node_sound_stone_defaults(),
@@ -57,7 +60,8 @@ minetest.register_tool("handholds:tool", {
 		end
 		local node = minetest.get_node(pointed_thing.under).name
 		if node == "default:stone" then
-			minetest.set_node(pointed_thing.under, {name = "handholds:stone"})
+			local rotation = minetest.dir_to_facedir(vector.subtract(pointed_thing.under, pointed_thing.above))
+			minetest.set_node(pointed_thing.under, {name = "handholds:stone", param2 = rotation})
 			minetest.set_node(pointed_thing.above, {name = "handholds:climbable_air"})
 		end	
 	end
