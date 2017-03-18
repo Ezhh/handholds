@@ -24,22 +24,6 @@ minetest.register_node("handholds:stone", {
 	drop = 'default:cobble',
 	sounds = default.node_sound_stone_defaults(),
 
-	-- add climbable air nodes!
-	on_construct = function(pos)
-		if minetest.get_node({x = pos.x, y = pos.y, z = pos.z+1}).name == "air" then
-			minetest.set_node({x = pos.x, y = pos.y, z = pos.z+1}, {name = "handholds:climbable_air"})
-		end
-		if minetest.get_node({x = pos.x, y = pos.y, z = pos.z-1}).name == "air" then
-			minetest.set_node({x = pos.x, y = pos.y, z = pos.z-1}, {name = "handholds:climbable_air"})
-		end
-		if minetest.get_node({x = pos.x+1, y = pos.y, z = pos.z}).name == "air" then
-			minetest.set_node({x = pos.x+1, y = pos.y, z = pos.z}, {name = "handholds:climbable_air"})
-		end
-		if minetest.get_node({x = pos.x-1, y = pos.y, z = pos.z}).name == "air" then
-			minetest.set_node({x = pos.x-1, y = pos.y, z = pos.z}, {name = "handholds:climbable_air"})
-		end
-	end,
-
 	--remove any climbable air nodes!
 	on_destruct = function(pos)
 		if minetest.get_node({x = pos.x, y = pos.y, z = pos.z+1}).name == "handholds:climbable_air" then
@@ -74,6 +58,7 @@ minetest.register_tool("handholds:tool", {
 		local node = minetest.get_node(pointed_thing.under).name
 		if node == "default:stone" then
 			minetest.set_node(pointed_thing.under, {name = "handholds:stone"})
+			minetest.set_node(pointed_thing.above, {name = "handholds:climbable_air"})
 		end	
 	end
 })
