@@ -26,21 +26,11 @@ minetest.register_node("handholds:stone", {
 	groups = {cracky = 3, stone = 1},
 	drop = 'default:cobble',
 	sounds = default.node_sound_stone_defaults(),
-
-	--remove any climbable air nodes!
 	on_destruct = function(pos)
-		if minetest.get_node({x = pos.x, y = pos.y, z = pos.z+1}).name == "handholds:climbable_air" then
-			minetest.set_node({x = pos.x, y = pos.y, z = pos.z+1}, {name = "air"})
-		end
-		if minetest.get_node({x = pos.x, y = pos.y, z = pos.z-1}).name == "handholds:climbable_air" then
-			minetest.set_node({x = pos.x, y = pos.y, z = pos.z-1}, {name = "air"})
-		end
-		if minetest.get_node({pos.x+1, y = pos.y, z = pos.z}).name == "handholds:climbable_air" then
-			minetest.set_node({pos.x+1, y = pos.y, z = pos.z}, {name = "air"})
-		end
-		if minetest.get_node({x = pos.x-1, y = pos.y, z = pos.z}).name == "handholds:climbable_air" then
-			minetest.set_node({x = pos.x-1, y = pos.y, z = pos.z}, {name = "air"})
-		end
+		local node = minetest.get_node(pos)
+		local dir = minetest.facedir_to_dir(node.param2)
+		local airpos = vector.subtract(pos, dir)
+		minetest.set_node(airpos, {name = "air"})
 	end,
 })
 
