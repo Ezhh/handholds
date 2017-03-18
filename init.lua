@@ -60,7 +60,9 @@ minetest.register_tool("handholds:tool", {
 minetest.register_craft({
 	output = "handholds:handhold_tool",
 	recipe = {
-		{"group:stick", "default:diamond", "group:stick"},
+		{'default:diamond', 'default:diamond', 'default:diamond'},
+		{'group:stick', '', ''},
+		{'group:stick', '', ''},
 	},
 })
 
