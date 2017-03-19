@@ -14,15 +14,14 @@ minetest.register_node("handholds:climbable_air", {
 })
 
 
--- handholds node
+-- handholds nodes
 minetest.register_node("handholds:stone", {
 	description = "Stone",
-	tiles = {"default_stone.png"},
 	tiles = {"default_stone.png", "default_stone.png", 
 		"default_stone.png", "default_stone.png", 
 		"default_stone.png", "default_stone.png^handholds_holds.png"},
 	paramtype2 = "facedir",
-	groups = {cracky = 3, stone = 1, not_in_creative_inventory = 1},
+	groups = {cracky = 3, stone = 1, not_in_creative_inventory = 1, handholds = 1},
 	drop = 'default:cobble',
 	sounds = default.node_sound_stone_defaults(),
 	after_destruct = function(pos, oldnode)
@@ -34,10 +33,68 @@ minetest.register_node("handholds:stone", {
 		local east_node = minetest.get_node({x = airpos.x+1, y = airpos.y, z = airpos.z})
 		local west_node = minetest.get_node({x = airpos.x-1, y = airpos.y, z = airpos.z})
 
-		local keep_air = (north_node.name == "handholds:stone" and north_node.param2 == 0) or
-			(south_node.name == "handholds:stone" and south_node.param2 == 2) or
-			(east_node.name == "handholds:stone" and east_node.param2 == 1) or
-			(west_node.name == "handholds:stone" and west_node.param2 == 3)
+		local keep_air = (minetest.get_item_group(north_node.name, "handholds") == 1 and north_node.param2 == 0) or
+			(minetest.get_item_group(south_node.name, "handholds") == 1 and south_node.param2 == 2) or
+			(minetest.get_item_group(east_node.name, "handholds") == 1 and east_node.param2 == 1) or
+			(minetest.get_item_group(west_node.name, "handholds") == 1 and west_node.param2 == 3)
+
+		if not keep_air then
+			minetest.set_node(airpos, {name = "air"})
+		end
+	end,
+})
+
+minetest.register_node("handholds:desert_stone", {
+	description = "Stone",
+	tiles = {"default_desert_stone.png", "default_desert_stone.png", 
+		"default_desert_stone.png", "default_desert_stone.png", 
+		"default_desert_stone.png", "default_desert_stone.png^handholds_holds.png"},
+	paramtype2 = "facedir",
+	groups = {cracky = 3, stone = 1, not_in_creative_inventory = 1, handholds = 1},
+	drop = 'default:desert_cobble',
+	sounds = default.node_sound_stone_defaults(),
+	after_destruct = function(pos, oldnode)
+		local dir = minetest.facedir_to_dir(oldnode.param2)
+		local airpos = vector.subtract(pos, dir)
+
+		local north_node = minetest.get_node({x = airpos.x, y = airpos.y, z = airpos.z+1})
+		local south_node = minetest.get_node({x = airpos.x, y = airpos.y, z = airpos.z-1})
+		local east_node = minetest.get_node({x = airpos.x+1, y = airpos.y, z = airpos.z})
+		local west_node = minetest.get_node({x = airpos.x-1, y = airpos.y, z = airpos.z})
+
+		local keep_air = (minetest.get_item_group(north_node.name, "handholds") == 1 and north_node.param2 == 0) or
+			(minetest.get_item_group(south_node.name, "handholds") == 1 and south_node.param2 == 2) or
+			(minetest.get_item_group(east_node.name, "handholds") == 1 and east_node.param2 == 1) or
+			(minetest.get_item_group(west_node.name, "handholds") == 1 and west_node.param2 == 3)
+
+		if not keep_air then
+			minetest.set_node(airpos, {name = "air"})
+		end
+	end,
+})
+
+minetest.register_node("handholds:sandstone", {
+	description = "Stone",
+	tiles = {"default_sandstone.png", "default_sandstone.png", 
+		"default_sandstone.png", "default_sandstone.png", 
+		"default_sandstone.png", "default_sandstone.png^handholds_holds.png"},
+	paramtype2 = "facedir",
+	groups = {cracky = 3, stone = 1, not_in_creative_inventory = 1, handholds = 1},
+	drop = 'default:sandstone',
+	sounds = default.node_sound_stone_defaults(),
+	after_destruct = function(pos, oldnode)
+		local dir = minetest.facedir_to_dir(oldnode.param2)
+		local airpos = vector.subtract(pos, dir)
+
+		local north_node = minetest.get_node({x = airpos.x, y = airpos.y, z = airpos.z+1})
+		local south_node = minetest.get_node({x = airpos.x, y = airpos.y, z = airpos.z-1})
+		local east_node = minetest.get_node({x = airpos.x+1, y = airpos.y, z = airpos.z})
+		local west_node = minetest.get_node({x = airpos.x-1, y = airpos.y, z = airpos.z})
+
+		local keep_air = (minetest.get_item_group(north_node.name, "handholds") == 1 and north_node.param2 == 0) or
+			(minetest.get_item_group(south_node.name, "handholds") == 1 and south_node.param2 == 2) or
+			(minetest.get_item_group(east_node.name, "handholds") == 1 and east_node.param2 == 1) or
+			(minetest.get_item_group(west_node.name, "handholds") == 1 and west_node.param2 == 3)
 
 		if not keep_air then
 			minetest.set_node(airpos, {name = "air"})
@@ -60,9 +117,19 @@ minetest.register_tool("handholds:tool", {
 			return 
 		end
 		local node = minetest.get_node(pointed_thing.under).name
-		if node == "default:stone" then
+		if minetest.get_item_group(node.name, "handholds") then
 			local rotation = minetest.dir_to_facedir(vector.subtract(pointed_thing.under, pointed_thing.above))
-			minetest.set_node(pointed_thing.under, {name = "handholds:stone", param2 = rotation})
+
+			if node == "default:stone" then
+				minetest.set_node(pointed_thing.under, {name = "handholds:stone", param2 = rotation})
+			end
+			if node == "default:desert_stone" then
+				minetest.set_node(pointed_thing.under, {name = "handholds:desert_stone", param2 = rotation})
+			end
+			if node == "default:sandstone" then
+				minetest.set_node(pointed_thing.under, {name = "handholds:sandstone", param2 = rotation})
+			end
+
 			minetest.set_node(pointed_thing.above, {name = "handholds:climbable_air"})
 			minetest.sound_play(
 				"default_dig_cracky",
