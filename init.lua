@@ -10,7 +10,7 @@ minetest.register_node("handholds:climbable_air", {
 	diggable = false,
 	climbable = true,
 	drop = "",
-	groups = {not_in_creative_inventory=1}
+	groups = {not_in_creative_inventory = 1}
 })
 
 
@@ -22,7 +22,7 @@ minetest.register_node("handholds:stone", {
 		"default_stone.png", "default_stone.png", 
 		"default_stone.png", "default_stone.png^handholds_holds.png"},
 	paramtype2 = "facedir",
-	groups = {cracky = 3, stone = 1},
+	groups = {cracky = 3, stone = 1, not_in_creative_inventory = 1},
 	drop = 'default:cobble',
 	sounds = default.node_sound_stone_defaults(),
 	after_destruct = function(pos, oldnode)
