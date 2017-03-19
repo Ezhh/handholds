@@ -1,1 +1,1 @@
-Adds a climbing pick which creates handholds in stone, desert stone and sandstone nodes.
+Adds a climbing pick which creates handholds in stone, desert stone, sandstone and ice nodes.
