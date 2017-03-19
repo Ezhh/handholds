@@ -34,9 +34,9 @@ minetest.register_node("handholds:stone", {
 		local west_node = minetest.get_node({x = airpos.x-1, y = airpos.y, z = airpos.z})
 
 		local keep_air = (minetest.get_item_group(north_node.name, "handholds") == 1 and north_node.param2 == 0) or
-			(minetest.get_item_group(south_node.name, "handholds") == 1 and south_node.param2 == 2) or
-			(minetest.get_item_group(east_node.name, "handholds") == 1 and east_node.param2 == 1) or
-			(minetest.get_item_group(west_node.name, "handholds") == 1 and west_node.param2 == 3)
+				(minetest.get_item_group(south_node.name, "handholds") == 1 and south_node.param2 == 2) or
+				(minetest.get_item_group(east_node.name, "handholds") == 1 and east_node.param2 == 1) or
+				(minetest.get_item_group(west_node.name, "handholds") == 1 and west_node.param2 == 3)
 
 		if not keep_air then
 			minetest.set_node(airpos, {name = "air"})
@@ -63,9 +63,9 @@ minetest.register_node("handholds:desert_stone", {
 		local west_node = minetest.get_node({x = airpos.x-1, y = airpos.y, z = airpos.z})
 
 		local keep_air = (minetest.get_item_group(north_node.name, "handholds") == 1 and north_node.param2 == 0) or
-			(minetest.get_item_group(south_node.name, "handholds") == 1 and south_node.param2 == 2) or
-			(minetest.get_item_group(east_node.name, "handholds") == 1 and east_node.param2 == 1) or
-			(minetest.get_item_group(west_node.name, "handholds") == 1 and west_node.param2 == 3)
+				(minetest.get_item_group(south_node.name, "handholds") == 1 and south_node.param2 == 2) or
+				(minetest.get_item_group(east_node.name, "handholds") == 1 and east_node.param2 == 1) or
+				(minetest.get_item_group(west_node.name, "handholds") == 1 and west_node.param2 == 3)
 
 		if not keep_air then
 			minetest.set_node(airpos, {name = "air"})
@@ -92,9 +92,9 @@ minetest.register_node("handholds:sandstone", {
 		local west_node = minetest.get_node({x = airpos.x-1, y = airpos.y, z = airpos.z})
 
 		local keep_air = (minetest.get_item_group(north_node.name, "handholds") == 1 and north_node.param2 == 0) or
-			(minetest.get_item_group(south_node.name, "handholds") == 1 and south_node.param2 == 2) or
-			(minetest.get_item_group(east_node.name, "handholds") == 1 and east_node.param2 == 1) or
-			(minetest.get_item_group(west_node.name, "handholds") == 1 and west_node.param2 == 3)
+				(minetest.get_item_group(south_node.name, "handholds") == 1 and south_node.param2 == 2) or
+				(minetest.get_item_group(east_node.name, "handholds") == 1 and east_node.param2 == 1) or
+				(minetest.get_item_group(west_node.name, "handholds") == 1 and west_node.param2 == 3)
 
 		if not keep_air then
 			minetest.set_node(airpos, {name = "air"})
@@ -110,8 +110,8 @@ minetest.register_tool("handholds:climbing_pick", {
 	sound = {breaks = "default_tool_breaks"},
 	on_use = function(itemstack, player, pointed_thing)
 		if not pointed_thing or 
-			pointed_thing.type ~= "node" or 
-			minetest.is_protected(pointed_thing.under, player:get_player_name()) then
+				pointed_thing.type ~= "node" or 
+				minetest.is_protected(pointed_thing.under, player:get_player_name()) then
 			return 
 		end
 		local node = minetest.get_node(pointed_thing.under).name
