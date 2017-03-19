@@ -78,6 +78,20 @@ minetest.register_node("handholds:sandstone", {
 	end,
 })
 
+minetest.register_node("handholds:ice", {
+	description = "Stone",
+	tiles = {"default_ice.png", "default_ice.png", 
+		"default_ice.png", "default_ice.png", 
+		"default_ice.png", "default_ice.png^handholds_holds.png"},
+	paramtype2 = "facedir",
+	groups = {cracky = 3, puts_out_fire = 1, cools_lava = 1, not_in_creative_inventory = 1, handholds = 1},
+	drop = 'default:sandstone',
+	sounds = default.node_sound_glass_defaults(),
+	after_destruct = function(pos, oldnode)
+		remove_air(pos, oldnode)
+	end,
+})
+
 
 -- handholds tool
 minetest.register_tool("handholds:climbing_pick", {
@@ -100,6 +114,8 @@ minetest.register_tool("handholds:climbing_pick", {
 				minetest.set_node(pointed_thing.under, {name = "handholds:desert_stone", param2 = rotation})
 			elseif node == "default:sandstone" then
 				minetest.set_node(pointed_thing.under, {name = "handholds:sandstone", param2 = rotation})
+			elseif node == "default:ice" then
+				minetest.set_node(pointed_thing.under, {name = "handholds:ice", param2 = rotation})
 			end
 
 			minetest.set_node(pointed_thing.above, {name = "handholds:climbable_air"})
