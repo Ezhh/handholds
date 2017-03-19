@@ -64,6 +64,10 @@ minetest.register_tool("handholds:tool", {
 			local rotation = minetest.dir_to_facedir(vector.subtract(pointed_thing.under, pointed_thing.above))
 			minetest.set_node(pointed_thing.under, {name = "handholds:stone", param2 = rotation})
 			minetest.set_node(pointed_thing.above, {name = "handholds:climbable_air"})
+			minetest.sound_play(
+				"default_dig_cracky",
+				{pos = pointed_thing.above, gain = 0.5, max_hear_distance = 8}
+			)
 		end	
 	end
 })
