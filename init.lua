@@ -26,17 +26,22 @@ minetest.register_node("handholds:stone", {
 	drop = 'default:cobble',
 	sounds = default.node_sound_stone_defaults(),
 	after_destruct = function(pos, oldnode)
-		local node = minetest.get_node(pos)
 		local dir = minetest.facedir_to_dir(oldnode.param2)
-		local airpos = vector.subtract(pos, dir) 
-		if minetest.get_node({x = airpos.x, y = airpos.y, z = airpos.z+1}).name ~= "handholds:stone" and 
-			minetest.get_node({x = airpos.x, y = airpos.y, z = airpos.z-1}).name ~= "handholds:stone" and 
-			minetest.get_node({x = airpos.x+1, y = airpos.y, z = airpos.z}).name ~= "handholds:stone" and 
-			minetest.get_node({x = airpos.x-1, y = airpos.y, z = airpos.z}).name ~= "handholds:stone" then
+		local airpos = vector.subtract(pos, dir)
 
+		local north_node = minetest.get_node({x = airpos.x, y = airpos.y, z = airpos.z+1})
+		local south_node = minetest.get_node({x = airpos.x, y = airpos.y, z = airpos.z-1})
+		local east_node = minetest.get_node({x = airpos.x+1, y = airpos.y, z = airpos.z})
+		local west_node = minetest.get_node({x = airpos.x-1, y = airpos.y, z = airpos.z})
+
+		local keep_air = (north_node.name == "handholds:stone" and north_node.param2 == 0) or
+			(south_node.name == "handholds:stone" and south_node.param2 == 2) or
+			(east_node.name == "handholds:stone" and east_node.param2 == 1) or
+			(west_node.name == "handholds:stone" and west_node.param2 == 3)
+
+		if not keep_air then
 			minetest.set_node(airpos, {name = "air"})
 		end
-
 	end,
 })
 
