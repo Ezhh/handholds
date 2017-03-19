@@ -104,16 +104,14 @@ minetest.register_node("handholds:sandstone", {
 
 
 -- handholds tool
-minetest.register_tool("handholds:tool", {
+minetest.register_tool("handholds:climbing_pick", {
 	description = "Climbing Pick",
 	inventory_image = "handholds_tool.png",
 	sound = {breaks = "default_tool_breaks"},
 	on_use = function(itemstack, player, pointed_thing)
-		if not pointed_thing then
-			return
-		end
-		if pointed_thing.type ~= "node"
-		or minetest.is_protected(pointed_thing.under, player:get_player_name()) then
+		if not pointed_thing or 
+			pointed_thing.type ~= "node" or 
+			minetest.is_protected(pointed_thing.under, player:get_player_name()) then
 			return 
 		end
 		local node = minetest.get_node(pointed_thing.under).name
@@ -122,11 +120,9 @@ minetest.register_tool("handholds:tool", {
 
 			if node == "default:stone" then
 				minetest.set_node(pointed_thing.under, {name = "handholds:stone", param2 = rotation})
-			end
-			if node == "default:desert_stone" then
+			elseif node == "default:desert_stone" then
 				minetest.set_node(pointed_thing.under, {name = "handholds:desert_stone", param2 = rotation})
-			end
-			if node == "default:sandstone" then
+			elseif node == "default:sandstone" then
 				minetest.set_node(pointed_thing.under, {name = "handholds:sandstone", param2 = rotation})
 			end
 
