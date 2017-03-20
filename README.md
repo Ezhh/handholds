@@ -3,7 +3,7 @@ handholds
 
 Mountain climbing mod for Minetest by Shara RedCat which adds a climbing pick tool. Use the tool to add handholds to stone, desert stone, sandstone and ice which can then be climbed.
 
-Thanks to paramat, Zeno, Billre abd NathanS21 for testing and suggestions.
+Thanks to paramat, Zeno, Billre and NathanS21 for testing and suggestions.
 
 
 Licenses and Attribution 
