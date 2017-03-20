@@ -139,7 +139,7 @@ minetest.register_tool("handholds:climbing_pick", {
 })
 
 minetest.register_craft({
-	output = "handholds:handhold_tool",
+	output = "handholds:climbing_pick",
 	recipe = {
 		{'default:steel_ingot', 'default:steel_ingot', 'default:steel_ingot'},
 		{'group:stick', '', ''},
