@@ -85,7 +85,7 @@ minetest.register_node("handholds:ice", {
 		"default_ice.png", "default_ice.png^handholds_holds.png"},
 	paramtype2 = "facedir",
 	groups = {cracky = 3, puts_out_fire = 1, cools_lava = 1, not_in_creative_inventory = 1, handholds = 1},
-	drop = 'default:sandstone',
+	drop = 'default:ice',
 	sounds = default.node_sound_glass_defaults(),
 	after_destruct = function(pos, oldnode)
 		remove_air(pos, oldnode)
