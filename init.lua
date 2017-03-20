@@ -104,6 +104,12 @@ minetest.register_tool("handholds:climbing_pick", {
 				minetest.is_protected(pointed_thing.under, player:get_player_name()) then
 			return 
 		end
+
+		if pointed_thing.under.y + 1 == pointed_thing.above.y or
+				pointed_thing.under.y - 1 == pointed_thing.above.y then
+			return
+		end
+
 		local node_name = minetest.get_node(pointed_thing.under).name
 		local rotation = minetest.dir_to_facedir(vector.subtract(pointed_thing.under, pointed_thing.above))
 
@@ -129,7 +135,6 @@ minetest.register_tool("handholds:climbing_pick", {
 			itemstack:add_wear(1000)
 			return itemstack
 		end
-
 	end
 })
 
