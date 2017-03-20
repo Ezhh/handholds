@@ -104,26 +104,26 @@ minetest.register_tool("handholds:climbing_pick", {
 				minetest.is_protected(pointed_thing.under, player:get_player_name()) then
 			return 
 		end
-		local node = minetest.get_node(pointed_thing.under).name
-		if minetest.get_item_group(node.name, "handholds") then
-			local rotation = minetest.dir_to_facedir(vector.subtract(pointed_thing.under, pointed_thing.above))
+		local node_name = minetest.get_node(pointed_thing.under).name
+		local rotation = minetest.dir_to_facedir(vector.subtract(pointed_thing.under, pointed_thing.above))
 
-			if node == "default:stone" then
-				minetest.set_node(pointed_thing.under, {name = "handholds:stone", param2 = rotation})
-			elseif node == "default:desert_stone" then
-				minetest.set_node(pointed_thing.under, {name = "handholds:desert_stone", param2 = rotation})
-			elseif node == "default:sandstone" then
-				minetest.set_node(pointed_thing.under, {name = "handholds:sandstone", param2 = rotation})
-			elseif node == "default:ice" then
-				minetest.set_node(pointed_thing.under, {name = "handholds:ice", param2 = rotation})
-			end
+		if node_name == "default:stone" then
+			minetest.set_node(pointed_thing.under, {name = "handholds:stone", param2 = rotation})
+		elseif node_name == "default:desert_stone" then
+			minetest.set_node(pointed_thing.under, {name = "handholds:desert_stone", param2 = rotation})
+		elseif node_name == "default:sandstone" then
+			minetest.set_node(pointed_thing.under, {name = "handholds:sandstone", param2 = rotation})
+		elseif node_name == "default:ice" then
+			minetest.set_node(pointed_thing.under, {name = "handholds:ice", param2 = rotation})
+		else
+			return
+		end
 
-			minetest.set_node(pointed_thing.above, {name = "handholds:climbable_air"})
-			minetest.sound_play(
-				"default_dig_cracky",
-				{pos = pointed_thing.above, gain = 0.5, max_hear_distance = 8}
-			)
-		end	
+		minetest.set_node(pointed_thing.above, {name = "handholds:climbable_air"})
+		minetest.sound_play(
+			"default_dig_cracky",
+			{pos = pointed_thing.above, gain = 0.5, max_hear_distance = 8}
+		)
 	end
 })
 
@@ -135,4 +135,3 @@ minetest.register_craft({
 		{'group:stick', '', ''},
 	},
 })
-
