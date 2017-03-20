@@ -124,6 +124,12 @@ minetest.register_tool("handholds:climbing_pick", {
 			"default_dig_cracky",
 			{pos = pointed_thing.above, gain = 0.5, max_hear_distance = 8}
 		)
+
+		if not minetest.setting_getbool("creative_mode") then
+			itemstack:add_wear(1000)
+			return itemstack
+		end
+
 	end
 })
 
