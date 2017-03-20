@@ -130,7 +130,7 @@ minetest.register_tool("handholds:climbing_pick", {
 
 		if not minetest.setting_getbool("creative_mode") then
 			local wdef = itemstack:get_definition()
-			itemstack:add_wear(1000)
+			itemstack:add_wear(128)
 			if itemstack:get_count() == 0 and wdef.sound and wdef.sound.breaks then
 				minetest.sound_play(wdef.sound.breaks, {pos = pointed_thing.above, gain = 0.5})
 			end
