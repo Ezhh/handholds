@@ -9,10 +9,15 @@ local function remove_air(pos, oldnode)
 	local east_node = minetest.get_node({x = airpos.x+1, y = airpos.y, z = airpos.z})
 	local west_node = minetest.get_node({x = airpos.x-1, y = airpos.y, z = airpos.z})
 
-	local keep_air = (minetest.get_item_group(north_node.name, "handholds") == 1 and north_node.param2 == 0) or
-		(minetest.get_item_group(south_node.name, "handholds") == 1 and south_node.param2 == 2) or
-		(minetest.get_item_group(east_node.name, "handholds") == 1 and east_node.param2 == 1) or
-		(minetest.get_item_group(west_node.name, "handholds") == 1 and west_node.param2 == 3)
+	local keep_air =
+		(minetest.get_item_group(north_node.name, "handholds") == 1 and
+		north_node.param2 == 0) or
+		(minetest.get_item_group(south_node.name, "handholds") == 1 and
+		south_node.param2 == 2) or
+		(minetest.get_item_group(east_node.name, "handholds") == 1 and
+		east_node.param2 == 1) or
+		(minetest.get_item_group(west_node.name, "handholds") == 1 and
+		west_node.param2 == 3)
 
 	if not keep_air then
 		minetest.set_node(airpos, {name = "air"})
@@ -38,9 +43,11 @@ minetest.register_node("handholds:climbable_air", {
 -- handholds nodes
 minetest.register_node("handholds:stone", {
 	description = "Stone",
-	tiles = {"default_stone.png", "default_stone.png", 
+	tiles = {
 		"default_stone.png", "default_stone.png", 
-		"default_stone.png", "default_stone.png^handholds_holds.png"},
+		"default_stone.png", "default_stone.png", 
+		"default_stone.png", "default_stone.png^handholds_holds.png"
+	},
 	paramtype2 = "facedir",
 	groups = {cracky = 3, stone = 1, not_in_creative_inventory = 1, handholds = 1},
 	drop = 'default:cobble',
@@ -52,9 +59,11 @@ minetest.register_node("handholds:stone", {
 
 minetest.register_node("handholds:desert_stone", {
 	description = "Stone",
-	tiles = {"default_desert_stone.png", "default_desert_stone.png", 
+	tiles = {
 		"default_desert_stone.png", "default_desert_stone.png", 
-		"default_desert_stone.png", "default_desert_stone.png^handholds_holds.png"},
+		"default_desert_stone.png", "default_desert_stone.png", 
+		"default_desert_stone.png", "default_desert_stone.png^handholds_holds.png"
+	},
 	paramtype2 = "facedir",
 	groups = {cracky = 3, stone = 1, not_in_creative_inventory = 1, handholds = 1},
 	drop = 'default:desert_cobble',
@@ -66,9 +75,11 @@ minetest.register_node("handholds:desert_stone", {
 
 minetest.register_node("handholds:sandstone", {
 	description = "Stone",
-	tiles = {"default_sandstone.png", "default_sandstone.png", 
+	tiles = {
 		"default_sandstone.png", "default_sandstone.png", 
-		"default_sandstone.png", "default_sandstone.png^handholds_holds.png"},
+		"default_sandstone.png", "default_sandstone.png", 
+		"default_sandstone.png", "default_sandstone.png^handholds_holds.png"
+	},
 	paramtype2 = "facedir",
 	groups = {cracky = 3, stone = 1, not_in_creative_inventory = 1, handholds = 1},
 	drop = 'default:sandstone',
@@ -80,11 +91,16 @@ minetest.register_node("handholds:sandstone", {
 
 minetest.register_node("handholds:ice", {
 	description = "Stone",
-	tiles = {"default_ice.png", "default_ice.png", 
+	tiles = {
 		"default_ice.png", "default_ice.png", 
-		"default_ice.png", "default_ice.png^handholds_holds.png"},
+		"default_ice.png", "default_ice.png", 
+		"default_ice.png", "default_ice.png^handholds_holds.png"
+	},
 	paramtype2 = "facedir",
-	groups = {cracky = 3, puts_out_fire = 1, cools_lava = 1, not_in_creative_inventory = 1, handholds = 1},
+	groups = {
+		cracky = 3, puts_out_fire = 1, cools_lava = 1,
+		not_in_creative_inventory = 1, handholds = 1
+	},
 	drop = 'default:ice',
 	sounds = default.node_sound_glass_defaults(),
 	after_destruct = function(pos, oldnode)
@@ -108,16 +124,21 @@ minetest.register_tool("handholds:climbing_pick", {
 		end
 
 		local node_name = minetest.get_node(pointed_thing.under).name
-		local rotation = minetest.dir_to_facedir(vector.subtract(pointed_thing.under, pointed_thing.above))
+		local rotation = minetest.dir_to_facedir(
+			vector.subtract(pointed_thing.under, pointed_thing.above))
 
 		if node_name == "default:stone" then
-			minetest.set_node(pointed_thing.under, {name = "handholds:stone", param2 = rotation})
+			minetest.set_node(pointed_thing.under,
+				{name = "handholds:stone", param2 = rotation})
 		elseif node_name == "default:desert_stone" then
-			minetest.set_node(pointed_thing.under, {name = "handholds:desert_stone", param2 = rotation})
+			minetest.set_node(pointed_thing.under,
+				{name = "handholds:desert_stone", param2 = rotation})
 		elseif node_name == "default:sandstone" then
-			minetest.set_node(pointed_thing.under, {name = "handholds:sandstone", param2 = rotation})
+			minetest.set_node(pointed_thing.under,
+				{name = "handholds:sandstone", param2 = rotation})
 		elseif node_name == "default:ice" then
-			minetest.set_node(pointed_thing.under, {name = "handholds:ice", param2 = rotation})
+			minetest.set_node(pointed_thing.under,
+				{name = "handholds:ice", param2 = rotation})
 		else
 			return
 		end
@@ -132,7 +153,8 @@ minetest.register_tool("handholds:climbing_pick", {
 			local wdef = itemstack:get_definition()
 			itemstack:add_wear(128)
 			if itemstack:get_count() == 0 and wdef.sound and wdef.sound.breaks then
-				minetest.sound_play(wdef.sound.breaks, {pos = pointed_thing.above, gain = 0.5})
+				minetest.sound_play(wdef.sound.breaks,
+					{pos = pointed_thing.above, gain = 0.5})
 			end
 			return itemstack
 		end
