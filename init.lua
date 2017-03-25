@@ -118,6 +118,7 @@ minetest.register_tool("handholds:climbing_pick", {
 		if not pointed_thing or 
 				pointed_thing.type ~= "node" or 
 				minetest.is_protected(pointed_thing.under, player:get_player_name()) or
+				minetest.is_protected(pointed_thing.above, player:get_player_name()) or
 				pointed_thing.under.y + 1 == pointed_thing.above.y or
 				pointed_thing.under.y - 1 == pointed_thing.above.y then
 			return
