@@ -124,6 +124,12 @@ minetest.register_tool("handholds:climbing_pick", {
 			return
 		end
 
+		local node_def = 
+			minetest.registered_nodes[minetest.get_node(pointed_thing.above).name]
+		if not node_def or not node_def.buildable_to then
+			return
+		end
+
 		local node_name = minetest.get_node(pointed_thing.under).name
 		local rotation = minetest.dir_to_facedir(
 			vector.subtract(pointed_thing.under, pointed_thing.above))
