@@ -42,7 +42,7 @@ minetest.register_node("handholds:climbable_air", {
 
 -- handholds nodes
 minetest.register_node("handholds:stone", {
-	description = "Stone",
+	description = "Stone Handholds",
 	tiles = {
 		"default_stone.png", "default_stone.png", 
 		"default_stone.png", "default_stone.png", 
@@ -58,7 +58,7 @@ minetest.register_node("handholds:stone", {
 })
 
 minetest.register_node("handholds:desert_stone", {
-	description = "Stone",
+	description = "Desert Stone Handholds",
 	tiles = {
 		"default_desert_stone.png", "default_desert_stone.png", 
 		"default_desert_stone.png", "default_desert_stone.png", 
@@ -74,7 +74,7 @@ minetest.register_node("handholds:desert_stone", {
 })
 
 minetest.register_node("handholds:sandstone", {
-	description = "Stone",
+	description = "Sandstone Handholds",
 	tiles = {
 		"default_sandstone.png", "default_sandstone.png", 
 		"default_sandstone.png", "default_sandstone.png", 
@@ -90,7 +90,7 @@ minetest.register_node("handholds:sandstone", {
 })
 
 minetest.register_node("handholds:ice", {
-	description = "Stone",
+	description = "Ice Handholds",
 	tiles = {
 		"default_ice.png", "default_ice.png", 
 		"default_ice.png", "default_ice.png", 
