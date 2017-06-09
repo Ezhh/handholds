@@ -25,6 +25,40 @@ local function remove_air(pos, oldnode)
 end
 
 
+-- remove handholds from nodes buried under falling nodes
+local function remove_handholds(pos)
+	local north_pos = {x = pos.x, y = pos.y, z = pos.z+1}
+	local south_pos = {x = pos.x, y = pos.y, z = pos.z-1}
+	local east_pos = {x = pos.x+1, y = pos.y, z = pos.z}
+	local west_pos = {x = pos.x-1, y = pos.y, z = pos.z}
+	local north_node = minetest.get_node(north_pos)
+	local south_node = minetest.get_node(south_pos)
+	local east_node = minetest.get_node(east_pos)
+	local west_node = minetest.get_node(west_pos)
+
+	local node_pos
+
+	if minetest.get_item_group(north_node.name, "handholds") == 1 and
+			north_node.param2 == 0 then
+		node_pos = north_pos
+	elseif minetest.get_item_group(south_node.name, "handholds") == 1 and
+			south_node.param2 == 2 then
+		node_pos = south_pos
+	elseif minetest.get_item_group(east_node.name, "handholds") == 1 and
+			east_node.param2 == 1 then
+		node_pos = east_pos
+	elseif minetest.get_item_group(west_node.name, "handholds") == 1 and
+			west_node.param2 == 3 then
+		node_pos = west_pos
+	end
+
+	if node_pos then
+		local handholds_node = string.split(minetest.get_node(node_pos).name, ":")
+		minetest.set_node(node_pos, {name = "default:"..handholds_node[2]})
+	end
+end
+
+
 -- climbable air!
 minetest.register_node("handholds:climbable_air", {
 	description = "Air!",
@@ -36,7 +70,10 @@ minetest.register_node("handholds:climbable_air", {
 	diggable = false,
 	climbable = true,
 	drop = "",
-	groups = {not_in_creative_inventory = 1}
+	groups = {not_in_creative_inventory = 1},
+	on_destruct = function(pos)
+		remove_handholds(pos)
+	end,
 })
 
 
