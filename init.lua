@@ -86,6 +86,9 @@ minetest.register_node("handholds:stone", {
 		"default_stone.png", "default_stone.png^handholds_holds.png"
 	},
 	paramtype2 = "facedir",
+	on_rotate = function()
+		return false
+	end,
 	groups = {cracky = 3, stone = 1, not_in_creative_inventory = 1, handholds = 1},
 	drop = 'default:cobble',
 	sounds = default.node_sound_stone_defaults(),
@@ -102,6 +105,9 @@ minetest.register_node("handholds:desert_stone", {
 		"default_desert_stone.png", "default_desert_stone.png^handholds_holds.png"
 	},
 	paramtype2 = "facedir",
+	on_rotate = function()
+		return false
+	end,
 	groups = {cracky = 3, stone = 1, not_in_creative_inventory = 1, handholds = 1},
 	drop = 'default:desert_cobble',
 	sounds = default.node_sound_stone_defaults(),
@@ -118,6 +124,9 @@ minetest.register_node("handholds:sandstone", {
 		"default_sandstone.png", "default_sandstone.png^handholds_holds.png"
 	},
 	paramtype2 = "facedir",
+	on_rotate = function()
+		return false
+	end,
 	groups = {cracky = 3, stone = 1, not_in_creative_inventory = 1, handholds = 1},
 	drop = 'default:sandstone',
 	sounds = default.node_sound_stone_defaults(),
@@ -134,6 +143,9 @@ minetest.register_node("handholds:ice", {
 		"default_ice.png", "default_ice.png^handholds_holds.png"
 	},
 	paramtype2 = "facedir",
+	on_rotate = function()
+		return false
+	end,
 	groups = {
 		cracky = 3, puts_out_fire = 1, cools_lava = 1,
 		not_in_creative_inventory = 1, handholds = 1
