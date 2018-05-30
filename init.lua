@@ -1,3 +1,5 @@
+-- global functions container
+handholds = {}
 
 -- function to safely remove climbable air
 local function remove_air(pos, oldnode)
@@ -76,87 +78,96 @@ minetest.register_node("handholds:climbable_air", {
 	end,
 })
 
+-- a simple recursive table-copying function.
+-- Doesn't handle reference loops, but that shouldn't come up in normal node defs
+local simple_copy
+simple_copy = function(t)
+	local r = {}
+	for k, v in pairs(t) do
+		if type(v) == "table" then
+			r[k] = simple_copy(v)
+		else
+			r[k] = v
+		end
+	end
+	return r
+end
 
--- handholds nodes
-minetest.register_node("handholds:stone", {
-	description = "Stone Handholds",
-	tiles = {
-		"default_stone.png", "default_stone.png", 
-		"default_stone.png", "default_stone.png", 
-		"default_stone.png", "default_stone.png^handholds_holds.png"
-	},
-	paramtype2 = "facedir",
-	on_rotate = function()
+--Duplicates a tile definition
+local copy_tile_def = function(tile_def)
+	if type(tile_def) == "string" then
+		return tile_def
+	else
+		return simple_copy(tile_def)
+	end
+end
+
+--Modifies a tile definition to have handholds_holds overlaid on it and returns the modified version
+local apply_handholds_to_tile = function(tile_def)
+	if type(tile_def) == "string" then
+		return tile_def .. "^handholds_holds.png"
+	else
+		new_def = simple_copy(tile_def)
+		new_def.name = new_def.name.."^handholds_holds.png"
+		return new_def
+	end
+end
+
+-- base_node to handhold name mapping
+local registered_handholds = {}
+
+--base_node_name is the node that's having a handholds node created for it
+--handhold_node_name is the name of the handhold node to be registered
+--handhold_def_override is a table of properties to override on the handhold def before it is registered
+-- for example, {description="Climbable Dirt"} would override the description of the resulting handhold node
+handholds.register_handholds_node = function(base_node_name, handhold_node_name, handhold_def_override)
+
+	local base_def = minetest.registered_nodes[base_node_name]
+	local handhold_def = simple_copy(base_def)
+	
+	handhold_def.description = base_def.description .. " Handholds"
+	
+	-- If no special drop was defined for this node, have it drop its old non-handhold self
+	if handhold_def.drop == nil then
+		handhold_def.drop = base_node_name
+	end
+	
+	if handhold_def.after_destruct == nil then
+		handhold_def.after_destruct = function(pos, oldnode)
+			remove_air(pos, oldnode)
+		end
+	else
+		-- If the base node has an after_destruct, run that and then run remove_air
+		handhold_def.after_destruct = function(pos, oldnode)
+			base_def.after_destruct(pos, oldnode)
+			remove_air(pos, oldnode)
+		end
+	end
+	handhold_def.on_rotate = function()
 		return false
-	end,
-	groups = {cracky = 3, stone = 1, not_in_creative_inventory = 1, handholds = 1},
-	drop = 'default:cobble',
-	sounds = default.node_sound_stone_defaults(),
-	after_destruct = function(pos, oldnode)
-		remove_air(pos, oldnode)
-	end,
-})
+	end
+	handhold_def.paramtype2 = "facedir"
+	
+	local tiles_length = table.getn(handhold_def.tiles)
+	for i = tiles_length+1, 6 do
+		handhold_def.tiles[i] = copy_tile_def(handhold_def.tiles[tiles_length])
+	end
+	handhold_def.tiles[6] = apply_handholds_to_tile(handhold_def.tiles[6])
+	
+	if handhold_def_override then 
+		for k,v in pairs(handhold_def_override) do
+			handhold_def[k] = v
+		end
+	end
 
-minetest.register_node("handholds:desert_stone", {
-	description = "Desert Stone Handholds",
-	tiles = {
-		"default_desert_stone.png", "default_desert_stone.png", 
-		"default_desert_stone.png", "default_desert_stone.png", 
-		"default_desert_stone.png", "default_desert_stone.png^handholds_holds.png"
-	},
-	paramtype2 = "facedir",
-	on_rotate = function()
-		return false
-	end,
-	groups = {cracky = 3, stone = 1, not_in_creative_inventory = 1, handholds = 1},
-	drop = 'default:desert_cobble',
-	sounds = default.node_sound_stone_defaults(),
-	after_destruct = function(pos, oldnode)
-		remove_air(pos, oldnode)
-	end,
-})
+	minetest.register_node(handhold_node_name, handhold_def)
+	registered_handholds[base_node_name] = handhold_node_name
+end
 
-minetest.register_node("handholds:sandstone", {
-	description = "Sandstone Handholds",
-	tiles = {
-		"default_sandstone.png", "default_sandstone.png", 
-		"default_sandstone.png", "default_sandstone.png", 
-		"default_sandstone.png", "default_sandstone.png^handholds_holds.png"
-	},
-	paramtype2 = "facedir",
-	on_rotate = function()
-		return false
-	end,
-	groups = {cracky = 3, stone = 1, not_in_creative_inventory = 1, handholds = 1},
-	drop = 'default:sandstone',
-	sounds = default.node_sound_stone_defaults(),
-	after_destruct = function(pos, oldnode)
-		remove_air(pos, oldnode)
-	end,
-})
-
-minetest.register_node("handholds:ice", {
-	description = "Ice Handholds",
-	tiles = {
-		"default_ice.png", "default_ice.png", 
-		"default_ice.png", "default_ice.png", 
-		"default_ice.png", "default_ice.png^handholds_holds.png"
-	},
-	paramtype2 = "facedir",
-	on_rotate = function()
-		return false
-	end,
-	groups = {
-		cracky = 3, puts_out_fire = 1, cools_lava = 1,
-		not_in_creative_inventory = 1, handholds = 1
-	},
-	drop = 'default:ice',
-	sounds = default.node_sound_glass_defaults(),
-	after_destruct = function(pos, oldnode)
-		remove_air(pos, oldnode)
-	end,
-})
-
+handholds.register_handholds_node("default:ice", "handholds:ice")
+handholds.register_handholds_node("default:stone", "handholds:stone")
+handholds.register_handholds_node("default:sandstone", "handholds:sandstone")
+handholds.register_handholds_node("default:desert_stone", "handholds:desert_stone")
 
 -- handholds tool
 minetest.register_tool("handholds:climbing_pick", {
@@ -183,18 +194,10 @@ minetest.register_tool("handholds:climbing_pick", {
 		local rotation = minetest.dir_to_facedir(
 			vector.subtract(pointed_thing.under, pointed_thing.above))
 
-		if node_name == "default:stone" then
+		local handhold_node_name = registered_handholds[node_name]
+		if handhold_node_name ~= nil then
 			minetest.set_node(pointed_thing.under,
-				{name = "handholds:stone", param2 = rotation})
-		elseif node_name == "default:desert_stone" then
-			minetest.set_node(pointed_thing.under,
-				{name = "handholds:desert_stone", param2 = rotation})
-		elseif node_name == "default:sandstone" then
-			minetest.set_node(pointed_thing.under,
-				{name = "handholds:sandstone", param2 = rotation})
-		elseif node_name == "default:ice" then
-			minetest.set_node(pointed_thing.under,
-				{name = "handholds:ice", param2 = rotation})
+				{name = handhold_node_name, param2 = rotation})
 		else
 			return
 		end
