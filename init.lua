@@ -56,7 +56,12 @@ local function remove_handholds(pos)
 
 	if node_pos then
 		local handholds_node = string.split(minetest.get_node(node_pos).name, ":")
-		minetest.set_node(node_pos, {name = "default:"..handholds_node[2]})
+		if handholds_node[1] == "handholds" then
+			minetest.set_node(node_pos, {name = "default:"..handholds_node[2]})
+		else
+			handholds_node = string.split(minetest.get_node(node_pos).name, "_")
+			minetest.set_node(node_pos, {name = handholds_node[1]})
+		end
 	end
 end
 
